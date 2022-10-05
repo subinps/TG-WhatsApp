@@ -27,6 +27,10 @@ A solution for the same would be using a bridge between both the apps. Yes, I kn
 
 For detailed instructions on how to deploy and run your own bot, refer [this wiki page of WhatsBot](https://github.com/tuhinpal/WhatsBot/wiki)
 
+- After succesfull deployment,add the telegram bot to telegram group and whatsapp user to whatsapp group and send `/connect` in your telegram group or `!connect <telegram chat id>` in your whatsapp group to connect both the group.
+- To disconnect a chat, use `/disconnect` in your telegram chat.
+
+
 ### How it works :
 
 - Open whatsapp web in server using puppeteer
