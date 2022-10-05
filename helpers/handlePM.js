@@ -58,7 +58,7 @@ const isPMEnabled = async (chatID, name, msg, client) => {
       }
     );
   }
-  if (config.pmReply) {
+  if (config.pmReply.toString() == "true") {
     await msg.reply(
       "this is an automated message! \nYou should'nt expect a reply here since iam made to work only on groups!"
     );
