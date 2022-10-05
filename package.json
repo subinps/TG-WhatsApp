@@ -1,7 +1,7 @@
 {
   "name": "whatsbot",
   "version": "3.0.0",
-  "description": "Plugable UserBot for WhatsApp",
+  "description": "Realtime integration of WhatsApp <-> Telegram",
   "main": "main.js",
   "scripts": {
     "start": "node startProcess.js",
@@ -10,36 +10,29 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tuhinpal/WhatsBot.git"
+    "url": "git+https://github.com/subinps/TG-WhatsApp"
   },
   "keywords": [
-    "whatsapp-bot"
+    "whatsapp-bot",
+    "telegram",
+    "bridge"
   ],
-  "author": "Tuhin Kanti Pal",
+  "author": "SUBIN",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/tuhinpal/WhatsBot/issues"
+    "url": "https://github.com/subinps/TG-WhatsApp/issues"
   },
-  "homepage": "https://github.com/tuhinpal/WhatsBot#readme",
+  "homepage": "https://github.com/subinps/TG-WhatsApp#readme",
   "dependencies": {
-    "@iamtraction/google-translate": "^1.1.2",
     "adm-zip": "^0.5.9",
     "aes-encrypt-stream": "^0.2.0",
     "axios": "^0.21.0",
-    "child_process": "^1.0.2",
     "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "form-data": "^3.0.0",
-    "mime-to-extensions": "^1.0.2",
     "mongodb": "^3.6.3",
-    "node-cron": "^3.0.0",
-    "ocr-space-api-wrapper": "^1.0.6",
     "qr-image": "^3.2.0",
     "qrcode-svg": "^1.1.0",
     "qrcode-terminal": "^0.12.0",
-    "serve-index": "^1.9.1",
-    "urban-dictionary": "^3.0.2",
-    "weather-js": "^2.0.0",
-    "whatsapp-web.js": "^1.16.5"
+    "telegraf": "^4.10.0",
+    "whatsapp-web.js": "^1.17.1"
   }
 }

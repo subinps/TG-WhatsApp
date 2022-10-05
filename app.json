@@ -1,9 +1,8 @@
 {
-  "name": "Whatsbot",
-  "description": "Modular Us**B*t for Whatsapp",
-  "repository": "https://github.com/tuhinpal/WhatsBot",
-  "logo": "https://telegra.ph/file/96ccad5945c18944c5f15.png",
-  "keywords": ["whatsbot", "whatsapp-bot", "whatsapp"],
+  "name": "TG-WhatsApp",
+  "description": "Realtime bridge between WhatsApp -Telegram.",
+  "repository": "https://github.com/subinps/TG-WhatsApp",
+  "keywords": ["telegram", "whatsapp-bot", "whatsapp"],
   "stack": "container",
   "env": {
     "SESSION_KEY": {
@@ -14,24 +13,20 @@
       "description": "session.secure public url (It is safe because it is encrypted, But still if you want maybe you can create some sort of authorization stuff)",
       "value": ""
     },
-    "PMPERMIT_ENABLED": {
-      "description": "Enable Pmpermit write true or false only",
+    "PM_REPLY": {
+      "description": " Make it false if you don't want bot to send an automated message when someone DM for first time.",
       "value": "true"
     },
     "MONGODB_URL": {
       "description": "MongoDB URL, Get it for free from cloud.mongodb.com",
       "value": ""
     },
-    "DEFAULT_TR_LANG": {
-      "description": "Default Translation Language",
-      "value": "en"
-    },
-    "ENABLE_DELETE_ALERT": {
-      "description": "If true & if someone delete message in PM, Bot will send the deleted message in that chat (Exclude Media)",
+    "BOT_TOKEN": {
+      "description": "telegram bot token from @Botfather",
       "value": "true"
     },
-    "OCR_SPACE_API_KEY": {
-      "description": "Get it from https://ocr.space/OCRAPI",
+    "OWNER_ID": {
+      "description": "your telegram ID",
       "value": ""
     }
   }
