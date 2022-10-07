@@ -5,6 +5,7 @@ const { Markup } = require("telegraf");
 const handleMessage = require("./helpers/handleMessage");
 const handleTgBot = require("./helpers/handleTG");
 const { database, pmEnabled, cachedData } = require("./db");
+const { clean } = require("./session/manage");
 
 const bot = new Telegraf(config.telegramBotToken);
 
@@ -88,6 +89,7 @@ client.on("qr", (qr) => {
     config.ownerID,
     "Session Expired / Not found, please login and setup session again!"
   );
+  clean();
   process.exit();
 });
 

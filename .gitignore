@@ -18,3 +18,4 @@ session.txt
 session-output/*
 session-output
 session.secure
+deploy.sh
