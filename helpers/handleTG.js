@@ -61,20 +61,23 @@ const getMediaInfo = (msg) => {
     ? "audio"
     : msg.voice
     ? "voice"
+    : msg.animation
+    ? "animation"
     : msg.sticker && !msg.sticker.is_animated
     ? "sticker"
     : "document";
   const mediaObj = msg[mediaType];
-  const [type, mimeType, SAD, fileName, fileId, caption, SAV] = [
+  const [type, mimeType, SAD, fileName, fileId, caption, SAV, SAG] = [
     mediaType,
     mediaObj.mime_type ? mediaObj.mime_type : "",
     false,
     null,
-    mediaObj.file_id ? mediaObj.file_id : mediaObj[0].file_id,
+    mediaObj.file_id ? mediaObj.file_id : mediaObj[mediaObj.length - 1].file_id,
     msg.caption
       ? `${getChatTitle(msg)} [${parseLink(msg)}] \n\n${msg.caption}`
       : `${getChatTitle(msg)} [${parseLink(msg)}]`,
     mediaType == "voice",
+    mediaType == "animation",
   ];
   switch (mediaType) {
     case "photo":
@@ -86,22 +89,26 @@ const getMediaInfo = (msg) => {
         fileId,
         caption,
         SAV,
+        SAG,
       };
     case "video":
-      return { type, mimeType, SAD, fileName, fileId, caption, SAV };
+      return { type, mimeType, SAD, fileName, fileId, caption, SAV, SAG };
     case "audio":
-      return { type, mimeType, SAD, fileName, fileId, caption, SAV };
+      return { type, mimeType, SAD, fileName, fileId, caption, SAV, SAG };
     case "voice":
-      return { type, mimeType, SAD, fileName, fileId, caption, SAV };
+      return { type, mimeType, SAD, fileName, fileId, caption, SAV, SAG };
+    case "animation":
+      return { type, mimeType, SAD, fileName, fileId, caption, SAV, SAG };
     case "sticker":
       return {
         type,
-        mimeType: "image/webp",
+        mimeType: msg.sticker.is_video ? "video/webm" : "image/webp",
         SAD,
         fileName,
         fileId,
         caption,
         SAV,
+        SAG,
         SAS: true,
       };
     default:
@@ -109,10 +116,11 @@ const getMediaInfo = (msg) => {
         type,
         mimeType,
         SAD: true,
-        fileName: mediaObj.file_name ? mediaObj.file_name : null,
+        fileName,
         fileId,
         caption,
         SAV,
+        SAG,
       };
   }
 };
@@ -141,8 +149,11 @@ const handleTgBot = async (ctx, client, MessageMedia) => {
           quotedMessageId: msgId,
           sendMediaAsDocument: mediaInfo.SAD,
           sendAudioAsVoice: mediaInfo.SAV,
+          stickerAuthor: "useTelegram",
+          stickerName: "telegramStickers",
           caption: mediaInfo.caption,
           sendMediaAsSticker: mediaInfo.SAS,
+          sendVideoAsGif: mediaInfo.SAG,
         });
       } else {
         const message_ = msg.text.startsWith("/send")

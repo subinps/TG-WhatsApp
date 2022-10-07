@@ -202,7 +202,7 @@ bot.command("disconnect", async (ctx) => {
 });
 
 bot.start((ctx) =>
-  ctx.replyWithMarkdown(
+  ctx.replyWithMarkdownV2(
     `Hey **${ctx.message.from.first_name}**, Welcome!\n\nPowered by [TG-WhatsApp](https://github.com/subinps/TG-WhatsApp).`,
     {
       disable_web_page_preview: true,
