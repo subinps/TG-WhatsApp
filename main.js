@@ -25,6 +25,8 @@ client.on("auth_failure", () => {
 
 client.on("ready", () => {
   console.log("WhatsApp Bot started !");
+  bot.launch();
+  console.log("Telegram Bot started!");
 });
 
 client.on("message", async (msg) => {
@@ -78,6 +80,15 @@ client.on("disconnected", (reason) => {
     config.ownerID,
     `WhatsApp client was logged out.\nReason ${reason}`
   );
+});
+
+client.on("qr", (qr) => {
+  console.log(`Session expired, please generate new session file!\n`);
+  client.tgbot.telegram.sendMessage(
+    config.ownerID,
+    "Session Expired / Not found, please login and setup session again!"
+  );
+  process.exit();
 });
 
 // tg bot commands
@@ -203,7 +214,7 @@ bot.command("disconnect", async (ctx) => {
 
 bot.start((ctx) =>
   ctx.replyWithMarkdownV2(
-    `Hey **${ctx.message.from.first_name}**, Welcome!\n\nPowered by [TG-WhatsApp](https://github.com/subinps/TG-WhatsApp).`,
+    `Hey **${ctx.message.from.first_name}**, Welcome\\!\n\nPowered by [TG\\-WhatsApp](https://github.com/subinps/TG-WhatsApp)\\.`,
     {
       disable_web_page_preview: true,
       reply_markup: {
@@ -224,5 +235,4 @@ client.tgbot = bot;
 
 client.initialize();
 
-bot.launch();
-console.log("Telegram Bot started !");
+console.log("Initializing clients.. please wait...");

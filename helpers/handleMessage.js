@@ -124,6 +124,30 @@ const handleMessage = async (message, tgbot, client) => {
 
   if (message.hasMedia) {
     try {
+      if (message._data?.size) {
+        if (message._data.size > config.tgUploadMax) {
+          console.log(
+            `Skipping message since file Size [${message._data.size}] is higer than tg limit!`
+          );
+          const msg = await tgbot.telegram.sendMessage(
+            tgChatID,
+            `<b>ERROR</b>\n<i>File Size Exceeded the maximum upload limit! Message was skipped.</i>\n\n${tgMessage}`,
+            {
+              parse_mode: "HTML",
+              disable_web_page_preview: true,
+              disable_notification: chat.isMuted,
+              reply_to_message_id: replyToMessageID,
+            }
+          );
+          replyIDSWhatsAPP.set(msgId.toString(), msg.message_id);
+          replyIDSTG.set(`${msg.chat.id}:${msg.message_id}`, msgId.toString());
+          await message.reply(
+            "ERROR\n\nThis message was not delivered to telegram group since the file size exceeds maximum size allowed by API!"
+          );
+          return;
+        }
+      }
+
       await message.downloadMedia().then(async (data) => {
         const mediaInfo = await getMediaInfo(message);
         const filePath = path.join(__dirname, "../" + mediaInfo.fileName);

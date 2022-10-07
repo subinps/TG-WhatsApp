@@ -7,4 +7,6 @@ module.exports = {
   telegramBotToken: process.env.BOT_TOKEN,
   ownerID: process.env.OWNER_ID,
   pmReply: process.env.PM_REPLY,
+  tgDownloadMax: 20971520, // 20 MB
+  tgUploadMax: 52428800 // 50MB
 };

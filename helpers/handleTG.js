@@ -66,13 +66,19 @@ const getMediaInfo = (msg) => {
     : msg.sticker && !msg.sticker.is_animated
     ? "sticker"
     : "document";
-  const mediaObj = msg[mediaType];
-  const [type, mimeType, SAD, fileName, fileId, caption, SAV, SAG] = [
+  let mediaObj;
+
+  mediaObj = msg[mediaType];
+  if (Array.isArray(mediaObj)) {
+    mediaObj = mediaObj[mediaObj.length - 1]; // choosing highest quality among an array
+  }
+  const [type, mimeType, SAD, fileName, fileId, fileSize, caption, SAV, SAG] = [
     mediaType,
     mediaObj.mime_type ? mediaObj.mime_type : "",
     false,
-    null,
-    mediaObj.file_id ? mediaObj.file_id : mediaObj[mediaObj.length - 1].file_id,
+    mediaObj.file_name,
+    mediaObj.file_id,
+    mediaObj.file_size,
     msg.caption
       ? `${getChatTitle(msg)} [${parseLink(msg)}] \n\n${msg.caption}`
       : `${getChatTitle(msg)} [${parseLink(msg)}]`,
@@ -87,18 +93,59 @@ const getMediaInfo = (msg) => {
         SAD,
         fileName,
         fileId,
+        fileSize,
         caption,
         SAV,
         SAG,
       };
     case "video":
-      return { type, mimeType, SAD, fileName, fileId, caption, SAV, SAG };
+      return {
+        type,
+        mimeType,
+        SAD,
+        fileName,
+        fileId,
+        fileSize,
+        caption,
+        SAV,
+        SAG,
+      };
     case "audio":
-      return { type, mimeType, SAD, fileName, fileId, caption, SAV, SAG };
+      return {
+        type,
+        mimeType,
+        SAD,
+        fileName,
+        fileId,
+        fileSize,
+        caption,
+        SAV,
+        SAG,
+      };
     case "voice":
-      return { type, mimeType, SAD, fileName, fileId, caption, SAV, SAG };
+      return {
+        type,
+        mimeType,
+        SAD,
+        fileName,
+        fileId,
+        fileSize,
+        caption,
+        SAV,
+        SAG,
+      };
     case "animation":
-      return { type, mimeType, SAD, fileName, fileId, caption, SAV, SAG };
+      return {
+        type,
+        mimeType,
+        SAD,
+        fileName,
+        fileId,
+        fileSize,
+        caption,
+        SAV,
+        SAG,
+      };
     case "sticker":
       return {
         type,
@@ -106,6 +153,7 @@ const getMediaInfo = (msg) => {
         SAD,
         fileName,
         fileId,
+        fileSize,
         caption,
         SAV,
         SAG,
@@ -118,6 +166,7 @@ const getMediaInfo = (msg) => {
         SAD: true,
         fileName,
         fileId,
+        fileSize,
         caption,
         SAV,
         SAG,
@@ -131,6 +180,36 @@ const handleTgBot = async (ctx, client, MessageMedia) => {
       let waMsg;
       if (!msg.text && chatId) {
         const mediaInfo = getMediaInfo(msg);
+        if (mediaInfo.fileSize > config.tgDownloadMax) {
+          console.log(
+            `File size ${mediaInfo.fileSize} exceeds max download size`
+          );
+          waMsg = await client.sendMessage(
+            chatId,
+            `ERROR: File Size Exceeds maximum upload size\n\n${mediaInfo.caption}`,
+            {
+              quotedMessageId: msgId,
+            }
+          );
+          ctx.reply(
+            "<b>ERROR</b>\nFile was not delivered properly, since the file size exceeds maximum file size allowed by API.",
+            {
+              reply_to_message_id: ctx.message.message_id,
+              allow_sending_without_reply: true,
+              parse_mode: "HTML",
+            }
+          );
+
+          replyIDSTG.set(
+            `${msg.chat.id}:${msg.message_id}`,
+            waMsg?.id?._serialized
+          );
+          replyIDSWhatsAPP.set(
+            waMsg?.id?._serialized.toString(),
+            msg.message_id
+          );
+          return;
+        }
         const fileInfo = await ctx.telegram.getFile(mediaInfo.fileId);
         const base64Data = Buffer.from(
           (
