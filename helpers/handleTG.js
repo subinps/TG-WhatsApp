@@ -228,7 +228,7 @@ const handleTgBot = async (ctx, client, MessageMedia) => {
           quotedMessageId: msgId,
           sendMediaAsDocument: mediaInfo.SAD,
           sendAudioAsVoice: mediaInfo.SAV,
-          stickerAuthor: "useTelegram",
+          stickerAuthor: getChatTitle(msg),
           stickerName: "telegramStickers",
           caption: mediaInfo.caption,
           sendMediaAsSticker: mediaInfo.SAS,
